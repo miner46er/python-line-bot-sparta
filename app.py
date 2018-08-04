@@ -54,7 +54,7 @@ def message_text(event):
         # seperate message contents as command arguments
         message_body = event.message.text.strip()[1:].split()
         command_text = message_body[0]
-        arguments_text = message_body[1:]
+        arguments_text = ' '.join(message_body[1:])
 
         if command_text == 'echo':
             line_bot_api.reply_message(
