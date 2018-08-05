@@ -69,11 +69,11 @@ def message_text(event):
             bubble = BubbleContainer(
                 direction='ltr',
                 hero=ImageComponent(
-                    url='https://example.com/cafe.jpg',
+                    url='https://img.wongnai.com/p/1920x0/2017/12/30/19f2934940cf47669b2d1336feea0b97.jpg',
                     size='full',
-                    aspect_ratio='20:13',
+                    aspect_ratio='4:3',
                     aspect_mode='cover',
-                    action=URIAction(uri='http://example.com', label='label')
+                    action=URIAction(uri='https://github.com/miner46er/python-line-bot-sparta', label='label')
                 ),
                 body=BoxComponent(
                     layout='vertical',
@@ -85,11 +85,11 @@ def message_text(event):
                             layout='baseline',
                             margin='md',
                             contents=[
-                                IconComponent(size='sm', url='https://example.com/gold_star.png'),
-                                IconComponent(size='sm', url='https://example.com/grey_star.png'),
-                                IconComponent(size='sm', url='https://example.com/gold_star.png'),
-                                IconComponent(size='sm', url='https://example.com/gold_star.png'),
-                                IconComponent(size='sm', url='https://example.com/grey_star.png'),
+                                IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+                                IconComponent(size='sm', url='https://freeiconshop.com/wp-content/uploads/edd/star-curved-outline.png'),
+                                IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+                                IconComponent(size='sm', url='https://cdn2.iconfinder.com/data/icons/default-1/100/.svg-4-512.png'),
+                                IconComponent(size='sm', url='https://freeiconshop.com/wp-content/uploads/edd/star-curved-outline.png'),
                                 TextComponent(text='4.0', size='sm', color='#999999', margin='md',
                                               flex=0)
                             ]
@@ -160,7 +160,7 @@ def message_text(event):
                         ButtonComponent(
                             style='link',
                             height='sm',
-                            action=URIAction(label='WEBSITE', uri="https://example.com")
+                            action=URIAction(label='WEBSITE', uri="https://github.com/miner46er/python-line-bot-sparta")
                         )
                     ]
                 ),
