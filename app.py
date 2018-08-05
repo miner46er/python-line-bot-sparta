@@ -36,7 +36,6 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
 
     # handle webhook body
     try:
@@ -51,15 +50,17 @@ def callback():
 def message_text(event):
     # check bot prefix
     if event.message.text.startswith('!'):
-        # seperate message contents as command arguments
+        # seperate message contents as command and arguments
         message_body = event.message.text.strip()[1:].split()
-        command_text = message_body[0]
-        arguments_text = ' '.join(message_body[1:])
+        command = message_body[0]
+        arguments_list = message_body[1:]
+        arguments_string = ' '.join(arguments_list)
 
-        if command_text == 'echo':
+        # echo command: reply arguments to user
+        if command == 'echo':
             line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=arguments_text)
+                TextSendMessage(text=arguments_string)
             )
 
 
