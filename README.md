@@ -30,8 +30,8 @@ define CHANNEL_SECRET and CHANNEL_ACCESS_TOKEN in config vars
 ```sh
 heroku create
 heroku info # then set Line bot Webhook URL to: https://{YOUR_APP}.herokuapp.com/callback
-heroku config:set LINE_CHANNEL_SECRET="..."
-heroku config:set LINE_CHANNEL_ACCESS_TOKEN="..."
+heroku config:set CHANNEL_SECRET="..."
+heroku config:set CHANNEL_ACCESS_TOKEN="..."
 git push heroku master
 heroku logs
 ```
