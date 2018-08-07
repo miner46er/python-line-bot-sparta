@@ -20,6 +20,8 @@ from linebot.models import (
 
 )
 
+
+
 DATABASE_URL = os.getenv('DATABASE_URL', None)
 
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -60,6 +62,11 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
+    # menu list
+    rice_type = os.getenv('RICE_TYPE', '').split(', ')
+    topping_type = os.getenv('TOPPING_TYPE', '').split(', ')
+    sauce_type = os.getenv('SAUCE_TYPE', '').split(', ')
+
     # check bot prefix
     if event.message.text.startswith(BOT_PREFIX):
         # seperate message contents as command and arguments
@@ -203,7 +210,7 @@ def message_text(event):
                 image_carousel_template = ImageCarouselTemplate(columns=[
                     ImageCarouselColumn(
                         image_url='https://via.placeholder.com/1024x1024',
-                        action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + command + arguments_string + ' nasi')
+                        action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + command + arguments_string + ' putih')
                         ),
                     ImageCarouselColumn(
                         image_url='https://via.placeholder.com/1024x1024',
@@ -215,12 +222,61 @@ def message_text(event):
                     alt_text='ImageCarousel alt text', template=image_carousel_template)
                 
                 line_bot_api.reply_message(event.reply_token, template_message)
+            
+            elif len(arguments_list) == 1:
+                if rice_type.count(arguments_list[0]) == 1:
+                    image_carousel_template = ImageCarouselTemplate(columns=[
+                        ImageCarouselColumn(
+                            image_url='https://via.placeholder.com/1024x1024',
+                            action=MessageAction(label='Ayam', text=BOT_PREFIX + command + arguments_string + ' ayam')
+                            ),
+                        ImageCarouselColumn(
+                            image_url='https://via.placeholder.com/1024x1024',
+                            action=MessageAction(label='Cumi', text=BOT_PREFIX + command + arguments_string + ' cumi')
+                            ),
+                        ImageCarouselColumn(
+                            image_url='https://via.placeholder.com/1024x1024',
+                            action=MessageAction(label='Campur', text=BOT_PREFIX + command + arguments_string + ' campur')
+                            )
+                    ])
 
+                    template_message = TemplateSendMessage(
+                        alt_text='ImageCarousel alt text', template=image_carousel_template)
+                    
+                    line_bot_api.reply_message(event.reply_token, template_message)
+
+                else:
+                    order_mistake(event)
+
+            elif len(arguments_list) == 2:
+                if (rice_type.count(arguments_list[0]) == 1) and (topping_type.count(arguments_list[1]) == 1):
+                    image_carousel_template = ImageCarouselTemplate(columns=[
+                        ImageCarouselColumn(
+                            image_url='https://via.placeholder.com/1024x1024',
+                            action=MessageAction(label='Blackpepper', text=BOT_PREFIX + command + arguments_string + ' blackpepper')
+                            ),
+                        ImageCarouselColumn(
+                            image_url='https://via.placeholder.com/1024x1024',
+                            action=MessageAction(label='XO', text=BOT_PREFIX + command + arguments_string + ' xo')
+                            ),
+                        ImageCarouselColumn(
+                            image_url='https://via.placeholder.com/1024x1024',
+                            action=MessageAction(label='Mayo', text=BOT_PREFIX + command + arguments_string + ' mayo')
+                            )
+                    ])
+
+                    template_message = TemplateSendMessage(
+                        alt_text='ImageCarousel alt text', template=image_carousel_template)
+                    
+                    line_bot_api.reply_message(event.reply_token, template_message)
             else:
-                line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text="Format pesanan salah!")
-                )
+                order_mistake(event)
+
+def order_mistake(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text="Format pesanan salah!")
+    )
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
