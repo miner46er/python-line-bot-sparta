@@ -281,7 +281,7 @@ def message_text(event):
                     order_summary = TemplateSendMessage(
                         alt_text='Pesanan saat ini', template=summary_button)
 
-                    line_bot_api.reply_message(event.reply_token, [pilihan_menu, order_summary])
+                    line_bot_api.reply_message(event.reply_token, [menu_pesan, order_summary])
 
             else:
                 order_mistake(event)
