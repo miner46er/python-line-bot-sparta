@@ -203,21 +203,23 @@ def message_text(event):
                 image_carousel_template = ImageCarouselTemplate(columns=[
                     ImageCarouselColumn(
                         image_url='https://via.placeholder.com/1024x1024',
-                        action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + ' nasi')
+                        action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + arguments_string + ' nasi')
                         ),
                     ImageCarouselColumn(
                         image_url='https://via.placeholder.com/1024x1024',
-                        action=MessageAction(label='Umami Rice', text=BOT_PREFIX + ' umami')
+                        action=MessageAction(label='Umami Rice', text=BOT_PREFIX + arguments_string + ' umami')
                         )
                 ])
+
                 template_message = TemplateSendMessage(
                     alt_text='ImageCarousel alt text', template=image_carousel_template)
+                
                 line_bot_api.reply_message(event.reply_token, template_message)
 
             else:
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text="Format pesanan salah!")
+                    [TextSendMessage(text="Format pesanan salah!"), TextSendMessage(text="Format pesanan salah!")]
                 )
 
 if __name__ == "__main__":
