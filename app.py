@@ -214,7 +214,7 @@ def message_text(event):
                         ),
                     ImageCarouselColumn(
                         image_url='https://via.placeholder.com/1024x1024',
-                        action=MessageAction(label='Umami Rice', text=BOT_PREFIX + command + arguments_string + ' umami')
+                        action=MessageAction(label='Nasi Umami', text=BOT_PREFIX + command + arguments_string + ' umami')
                         )
                 ])
 
@@ -228,15 +228,15 @@ def message_text(event):
                     image_carousel_template = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/1024x1024',
-                            action=MessageAction(label='Ayam', text=BOT_PREFIX + command + arguments_string + ' ayam')
+                            action=MessageAction(label='Ayam', text=BOT_PREFIX + command + ' ' + arguments_string + ' ayam')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/1024x1024',
-                            action=MessageAction(label='Cumi', text=BOT_PREFIX + command + arguments_string + ' cumi')
+                            action=MessageAction(label='Cumi', text=BOT_PREFIX + command + ' ' + arguments_string + ' cumi')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/1024x1024',
-                            action=MessageAction(label='Campur', text=BOT_PREFIX + command + arguments_string + ' campur')
+                            action=MessageAction(label='Campur', text=BOT_PREFIX + command + ' ' + arguments_string + ' campur')
                             )
                     ])
 
@@ -253,15 +253,15 @@ def message_text(event):
                     image_carousel_template = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/1024x1024',
-                            action=MessageAction(label='Blackpepper', text=BOT_PREFIX + command + arguments_string + ' blackpepper')
+                            action=MessageAction(label='Blackpepper', text=BOT_PREFIX + command + ' ' + arguments_string + ' blackpepper')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/1024x1024',
-                            action=MessageAction(label='XO', text=BOT_PREFIX + command + arguments_string + ' xo')
+                            action=MessageAction(label='XO', text=BOT_PREFIX + command + ' ' + arguments_string + ' xo')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/1024x1024',
-                            action=MessageAction(label='Mayo', text=BOT_PREFIX + command + arguments_string + ' mayo')
+                            action=MessageAction(label='Mayo', text=BOT_PREFIX + command + ' ' + arguments_string + ' mayo')
                             )
                     ])
 
