@@ -207,15 +207,16 @@ def message_text(event):
             line_bot_api.reply_message(event.reply_token, menu_pesan)
         
         elif command == 'pesan':
+            order_memo = BOT_PREFIX + command + ' ' + arguments_string
             if len(arguments_list) == 0:
                 pilihan_menu = ImageCarouselTemplate(columns=[
                     ImageCarouselColumn(
                         image_url='https://via.placeholder.com/512x512',
-                        action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + command + arguments_string + ' putih')
+                        action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + command + ' putih')
                         ),
                     ImageCarouselColumn(
                         image_url='https://via.placeholder.com/512x512',
-                        action=MessageAction(label='Nasi Umami', text=BOT_PREFIX + command + arguments_string + ' umami')
+                        action=MessageAction(label='Nasi Umami', text=BOT_PREFIX + command + ' umami')
                         )
                 ])
                 menu_pesan = TemplateSendMessage(
@@ -228,15 +229,15 @@ def message_text(event):
                     pilihan_menu = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
-                            action=MessageAction(label='Ayam', text=BOT_PREFIX + command + ' ' + arguments_string + ' ayam')
+                            action=MessageAction(label='Ayam', text=order_memo + ' ayam')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
-                            action=MessageAction(label='Cumi', text=BOT_PREFIX + command + ' ' + arguments_string + ' cumi')
+                            action=MessageAction(label='Cumi', text=order_memo + ' cumi')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
-                            action=MessageAction(label='Campur', text=BOT_PREFIX + command + ' ' + arguments_string + ' campur')
+                            action=MessageAction(label='Campur', text=order_memo + ' campur')
                             )
                     ])
                     menu_pesan = TemplateSendMessage(
@@ -247,38 +248,41 @@ def message_text(event):
                 else:
                     order_mistake(event)
 
-
-            elif 2 <= len(arguments_list) <= 5:
+            elif 2 <= len(arguments_list) <= 5 and arguments_list[-1] != 'selesai':
                 if (rice_type.count(arguments_list[0]) == 1) and (topping_type.count(arguments_list[1]) == 1):
                     pilihan_menu = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
-                            action=MessageAction(label='XO', text=BOT_PREFIX + command + ' ' + arguments_string + ' xo')
+                            action=MessageAction(label='XO', text=order_memo + ' xo')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
-                            action=MessageAction(label='Mayonnaise', text=BOT_PREFIX + command + ' ' + arguments_string + ' mayo')
+                            action=MessageAction(label='Mayonnaise', text=order_memo + ' mayo')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
-                            action=MessageAction(label='Bumbu Bali', text=BOT_PREFIX + command + ' ' + arguments_string + ' bali')
+                            action=MessageAction(label='Bumbu Bali', text=order_memo + ' bali')
                             ),
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
-                            action=MessageAction(label='Blackpepper', text=BOT_PREFIX + command + ' ' + arguments_string + ' blackpepper')
+                            action=MessageAction(label='Blackpepper', text=order_memo + ' blackpepper')
                             )
                     ])
                     menu_pesan = TemplateSendMessage(
                         alt_text='Menu pesanan', template=pilihan_menu)
                     
                     summary_button = ButtonsTemplate(
-                        title='Pesananmu sekarang:', text='Nasi: ' + arguments_list[0] + '\nTopping: ' + arguments_list[1] + '\nSaus: ' + ', '.join(arguments_list[2:]), actions=[
-                            MessageAction(label='Selesai memesan', text=BOT_PREFIX + command + ' ' + arguments_string + ' selesai')
+                        title='Pesananmu sekarang:',
+                        text=('Nasi: ' + arguments_list[0] + '\nTopping: ' + arguments_list[1] +
+                            '\nSaus: ' + ', '.join(arguments_list[2:])),
+                        actions=[
+                            MessageAction(label='Selesai memesan', text=order_memo + ' selesai')
                         ])
                     order_summary = TemplateSendMessage(
                         alt_text='Pesanan saat ini', template=summary_button)
 
-                    line_bot_api.reply_message(event.reply_token, order_summary)
+                    line_bot_api.reply_message(event.reply_token, [pilihan_menu, order_summary])
+
             else:
                 order_mistake(event)
 
