@@ -1,5 +1,6 @@
 import os
 import sys
+import psycopg2
 from argparse import ArgumentParser
 
 from flask import Flask, request, abort
@@ -14,8 +15,14 @@ from linebot.models import (
     BubbleContainer, ImageComponent, BoxComponent, TextComponent,
     SpacerComponent, IconComponent, ButtonComponent, SeparatorComponent,
     URIAction, ButtonsTemplate, PostbackAction, MessageAction,
-    TemplateSendMessage,
+    TemplateSendMessage, rich_menu, imagemap, ImageCarouselTemplate,
+    ImageCarouselColumn, CarouselTemplate, CarouselColumn, PostbackEvent,
+
 )
+
+DATABASE_URL = os.getenv('DATABASE_URL', None)
+
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 app = Flask(__name__)
 
@@ -32,6 +39,7 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
+BOT_PREFIX = os.getenv('BOT_PREFIX', '!')
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -53,19 +61,24 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
     # check bot prefix
-    if event.message.text.startswith('!'):
+    if event.message.text.startswith(BOT_PREFIX):
         # seperate message contents as command and arguments
         message_body = event.message.text.strip()[1:].split()
         command = message_body[0]
-        arguments_list = message_body[1:]
-        arguments_string = ' '.join(arguments_list)
+        if(len(message_body) >= 2):
+            arguments_list = message_body[1:]
+            arguments_string = ' '.join(arguments_list)
+        else:
+            arguments_list = []
+            arguments_string = ''
 
         # echo command: reply arguments to user
         if command == 'echo':
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=arguments_string)
-            )
+            if(arguments_string != ''):
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=arguments_string)
+                )
 
         elif command == 'flex':
             bubble = BubbleContainer(
@@ -184,7 +197,28 @@ def message_text(event):
             template_message = TemplateSendMessage(
                 alt_text='Buttons alt text', template=buttons_template)
             line_bot_api.reply_message(event.reply_token, template_message)
-    
+        
+        elif command == 'pesan':
+            if len(arguments_list) == 0:
+                image_carousel_template = ImageCarouselTemplate(columns=[
+                    ImageCarouselColumn(
+                        image_url='https://via.placeholder.com/1024x1024',
+                        action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + ' nasi')
+                        ),
+                    ImageCarouselColumn(
+                        image_url='https://via.placeholder.com/1024x1024',
+                        action=MessageAction(label='Umami Rice', text=BOT_PREFIX + ' umami')
+                        )
+                ])
+                template_message = TemplateSendMessage(
+                    alt_text='ImageCarousel alt text', template=image_carousel_template)
+                line_bot_api.reply_message(event.reply_token, template_message)
+
+            else:
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text="Format pesanan salah!")
+                )
 
 if __name__ == "__main__":
     arg_parser = ArgumentParser(
