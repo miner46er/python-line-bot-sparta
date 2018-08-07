@@ -249,7 +249,7 @@ def message_text(event):
 
 
             elif 2 <= len(arguments_list) <= 5:
-                if (rice_type.count(arguments_list[0]) == 1) and (topping_type.count(arguments_list[1]) == 1):
+                '''if (rice_type.count(arguments_list[0]) == 1) and (topping_type.count(arguments_list[1]) == 1):
                     pilihan_menu = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
@@ -269,7 +269,7 @@ def message_text(event):
                             )
                     ])
                     menu_pesan = TemplateSendMessage(
-                        alt_text='Menu pesanan', template=pilihan_menu)
+                        alt_text='Menu pesanan', template=pilihan_menu)'''
                     
                     summary_button = ButtonsTemplate(
                         title='Pesananmu sekarang\nNasi: ' + arguments_list[0] + '\nTopping: ' + arguments_list[1] + '\nSaus: ' + ', '.join(arguments_list[2:]), actions=[
@@ -278,7 +278,7 @@ def message_text(event):
                     order_summary = TemplateSendMessage(
                         alt_text='Pesanan saat ini', template=summary_button)
 
-                    line_bot_api.reply_message(event.reply_token, [menu_pesan, order_summary])
+                    line_bot_api.reply_message(event.reply_token, order_summary)
             else:
                 order_mistake(event)
 
