@@ -250,7 +250,7 @@ def message_text(event):
 
             elif 2 <= len(arguments_list) <= 5:
                 if (rice_type.count(arguments_list[0]) == 1) and (topping_type.count(arguments_list[1]) == 1):
-                    '''pilihan_menu = ImageCarouselTemplate(columns=[
+                    pilihan_menu = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
                             action=MessageAction(label='XO', text=BOT_PREFIX + command + ' ' + arguments_string + ' xo')
@@ -269,10 +269,10 @@ def message_text(event):
                             )
                     ])
                     menu_pesan = TemplateSendMessage(
-                        alt_text='Menu pesanan', template=pilihan_menu)'''
+                        alt_text='Menu pesanan', template=pilihan_menu)
                     
                     summary_button = ButtonsTemplate(
-                        title='Pesananmu sekarangNasi: ' + arguments_list[0] + 'Topping: ' + arguments_list[1] + 'Saus: ', actions=[
+                        title='Pesananmu sekarang:', text='Nasi: ' + arguments_list[0] + '\nTopping: ' + arguments_list[1] + '\nSaus: ' + ', '.join(arguments_list[2:]), actions=[
                             MessageAction(label='Selesai memesan', text=BOT_PREFIX + command + ' ' + arguments_string + ' selesai')
                         ])
                     order_summary = TemplateSendMessage(
