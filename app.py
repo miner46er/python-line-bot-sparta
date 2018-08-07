@@ -276,7 +276,7 @@ def message_text(event):
                             MessageAction(label='Selesai memesan', text=BOT_PREFIX + command + ' ' + arguments_string + ' selesai')
                         ])
                     menu_pesan = TemplateSendMessage(
-                        alt_text='Buttons alt text', template=buttons_template)
+                        alt_text='Buttons alt text', template=order_summary)
 
                     line_bot_api.reply_message(event.reply_token, [menu_pesan, order_summary])
             else:
