@@ -1,5 +1,7 @@
 # python-line-bot-sparta
 
+this bot is using line-bot-sdk-python from https://github.com/line/line-bot-sdk-python
+
 ## Getting started local env
 
 ```
