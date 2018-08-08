@@ -273,8 +273,8 @@ def message_text(event):
                         alt_text='Menu saus', template=sauce_template)
                     
                     confirm_button = ButtonsTemplate(
-                        title='Pesananmu sekarang:',
-                        text=('Nasi       : ' + arguments_list[0] +
+                        text=('Pesananmu sekarang:' +
+                            '\nNasi       : ' + arguments_list[0] +
                             '\nTopping    : ' + arguments_list[1] +
                             '\nSaus(max 4): ' + ', '.join(arguments_list[2:])),
                         actions=[
@@ -291,8 +291,8 @@ def message_text(event):
             elif (len(arguments_list) == 6) and (arguments_list[-1] != 'selesai'):
                 if validate_order(arguments_list, -1):
                     summary_button = ButtonsTemplate(
-                        title='Apakah pesanan sudah benar?',
-                        text=('Nasi       : ' + arguments_list[0] +
+                        text=('Apakah pesanan sudah benar?' +
+                            '\nNasi       : ' + arguments_list[0] +
                             '\nTopping    : ' + arguments_list[1] +
                             '\nSaus(max 4): ' + ', '.join(arguments_list[2:])),
                         actions=[
