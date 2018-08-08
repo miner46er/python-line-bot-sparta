@@ -41,7 +41,13 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
+# bot prefix
 BOT_PREFIX = os.getenv('BOT_PREFIX', '!')
+
+# menu list
+RICE_TYPE = [x.strip() for x in os.getenv('RICE_TYPE', '').split(';')]
+TOPPING_TYPE = [x.strip() for x in os.getenv('TOPPING_TYPE', '').split(';')]
+SAUCE_TYPE = [x.strip() for x in os.getenv('SAUCE_TYPE', '').split(';')]
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -62,11 +68,6 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def message_text(event):
-    # menu list
-    rice_type = os.getenv('RICE_TYPE', '').split(', ')
-    topping_type = os.getenv('TOPPING_TYPE', '').split(', ')
-    sauce_type = os.getenv('SAUCE_TYPE', '').split(', ')
-
     # check bot prefix
     if event.message.text.startswith(BOT_PREFIX):
         # seperate message contents as command and arguments
@@ -225,7 +226,7 @@ def message_text(event):
                 line_bot_api.reply_message(event.reply_token, menu_pesan)
             
             elif len(arguments_list) == 1:
-                if rice_type.count(arguments_list[0]) == 1:
+                if RICE_TYPE.count(arguments_list[0]) == 1:
                     pilihan_menu = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
@@ -249,8 +250,8 @@ def message_text(event):
                     order_mistake(event)
 
             elif 2 <= len(arguments_list) <= 5 and arguments_list[-1] != 'selesai':
-                if (rice_type.count(arguments_list[0]) == 1) and (topping_type.count(arguments_list[1]) == 1):
-                    pilihan_menu = ImageCarouselTemplate(columns=[
+                if validate_order(arguments_list, -1):
+                    sauce_template = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
                             image_url='https://via.placeholder.com/512x512',
                             action=MessageAction(label='XO', text=order_memo + ' xo')
@@ -268,23 +269,60 @@ def message_text(event):
                             action=MessageAction(label='Blackpepper', text=order_memo + ' blackpepper')
                             )
                     ])
-                    menu_pesan = TemplateSendMessage(
-                        alt_text='Menu pesanan', template=pilihan_menu)
+                    sauce_choice = TemplateSendMessage(
+                        alt_text='Menu saus', template=sauce_template)
                     
-                    summary_button = ButtonsTemplate(
+                    confirm_button = ButtonsTemplate(
                         title='Pesananmu sekarang:',
-                        text=('Nasi: ' + arguments_list[0] + '\nTopping: ' + arguments_list[1] +
-                            '\nSaus: ' + ', '.join(arguments_list[2:])),
+                        text=('Nasi       : ' + arguments_list[0] +
+                            '\nTopping    : ' + arguments_list[1] +
+                            '\nSaus(max 4): ' + ', '.join(arguments_list[2:])),
+                        actions=[
+                            MessageAction(label='Selesai memesan', text=order_memo + ' selesai')
+                        ])
+                    order_confirm = TemplateSendMessage(
+                        alt_text='Pesanan saat ini', template=confirm_button)
+
+                    line_bot_api.reply_message(event.reply_token, [sauce_choice, order_confirm])
+                
+                else:
+                    order_mistake(event)
+
+            elif (len(arguments_list) == 6) and (arguments_list[-1] != 'selesai'):
+                if validate_order(arguments_list, -1):
+                    summary_button = ButtonsTemplate(
+                        title='Apakah pesanan sudah benar?',
+                        text=('Nasi       : ' + arguments_list[0] +
+                            '\nTopping    : ' + arguments_list[1] +
+                            '\nSaus(max 4): ' + ', '.join(arguments_list[2:])),
                         actions=[
                             MessageAction(label='Selesai memesan', text=order_memo + ' selesai')
                         ])
                     order_summary = TemplateSendMessage(
-                        alt_text='Pesanan saat ini', template=summary_button)
+                        alt_text='Konfirmasi pesanan', template=summary_button)
 
-                    line_bot_api.reply_message(event.reply_token, [menu_pesan, order_summary])
+                    line_bot_api.reply_message(event.reply_token, order_summary)
+
+            elif len(arguments_list) >= 3 and arguments_list[-1] == 'selesai':
+                if validate_order(arguments_list, -2):
+                    line_bot_api.reply_message(
+                        event.reply_token,
+                        TextSendMessage(text='Pesanan dikirim!')
+                    )
+                else:
+                    order_mistake(event)
 
             else:
                 order_mistake(event)
+
+def validate_order(arguments_list, last_index):
+    if ((RICE_TYPE.count(arguments_list[0]) == 1) and
+    (TOPPING_TYPE.count(arguments_list[1]) == 1) and
+    ([SAUCE_TYPE.count(x) for x in arguments_list[2:last_index]].count(0) == 0)):
+        return True
+    else:
+        return False
+
 
 def order_mistake(event):
     line_bot_api.reply_message(
