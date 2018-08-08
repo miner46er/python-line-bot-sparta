@@ -8,7 +8,7 @@ from linebot import (
     LineBotApi, WebhookHandler
 )
 from linebot.exceptions import (
-    InvalidSignatureError
+    InvalidSignatureError, LineBotApiError
 )
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage, FlexSendMessage,
@@ -16,8 +16,7 @@ from linebot.models import (
     SpacerComponent, IconComponent, ButtonComponent, SeparatorComponent,
     URIAction, ButtonsTemplate, PostbackAction, MessageAction,
     TemplateSendMessage, rich_menu, imagemap, ImageCarouselTemplate,
-    ImageCarouselColumn, CarouselTemplate, CarouselColumn, PostbackEvent,
-
+    ImageCarouselColumn, CarouselTemplate, CarouselColumn, PostbackEvent
 )
 
 
@@ -314,6 +313,12 @@ def message_text(event):
 
             else:
                 order_mistake(event)
+
+def pesanan_selesai(user_id):
+    line_bot_api.push_message(
+        user_id,
+        TextSendMessage(text='Pesanan anda sudah dapat diambil!')
+    )
 
 def validate_order(arguments_list, last_index):
     if ((RICE_TYPE.count(arguments_list[0]) == 1) and
