@@ -213,11 +213,11 @@ def message_text(event):
             if len(arguments_list) == 0:
                 pilihan_menu = ImageCarouselTemplate(columns=[
                     ImageCarouselColumn(
-                        image_url='https://via.placeholder.com/512x512',
+                        image_url=statics_url + '/nasi_putih.jpg',
                         action=MessageAction(label='Nasi Putih', text=BOT_PREFIX + command + ' putih')
                         ),
                     ImageCarouselColumn(
-                        image_url='https://via.placeholder.com/512x512',
+                        image_url=statics_url + '/nasi_umami.jpg',
                         action=MessageAction(label='Nasi Umami', text=BOT_PREFIX + command + ' umami')
                         )
                 ])
@@ -230,15 +230,15 @@ def message_text(event):
                 if RICE_TYPE.count(arguments_list[0]) == 1:
                     pilihan_menu = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
-                            image_url='https://via.placeholder.com/512x512',
+                            image_url=statics_url + '/topping_ayam.jpg',
                             action=MessageAction(label='Ayam', text=order_memo + ' ayam')
                             ),
                         ImageCarouselColumn(
-                            image_url='https://via.placeholder.com/512x512',
+                            image_url=statics_url + '/topping_cumi.jpg',
                             action=MessageAction(label='Cumi', text=order_memo + ' cumi')
                             ),
                         ImageCarouselColumn(
-                            image_url='https://via.placeholder.com/512x512',
+                            image_url=statics_url + 'topping_campur.jpg',
                             action=MessageAction(label='Campur', text=order_memo + ' campur')
                             )
                     ])
@@ -254,7 +254,7 @@ def message_text(event):
                 if validate_order(arguments_list, -1):
                     sauce_template = ImageCarouselTemplate(columns=[
                         ImageCarouselColumn(
-                            image_url='https://via.placeholder.com/512x512',
+                            image_url=statics_url + '/sauce_xo.jpg',
                             action=MessageAction(label='XO', text=order_memo + ' xo')
                             ),
                         ImageCarouselColumn(
@@ -262,11 +262,11 @@ def message_text(event):
                             action=MessageAction(label='Mayonnaise', text=order_memo + ' mayo')
                             ),
                         ImageCarouselColumn(
-                            image_url='https://via.placeholder.com/512x512',
+                            image_url=statics_url + '/sauce_bali.jpg',
                             action=MessageAction(label='Bumbu Bali', text=order_memo + ' bali')
                             ),
                         ImageCarouselColumn(
-                            image_url='https://via.placeholder.com/512x512',
+                            image_url=statics_url + '/sauce_blackpepper.jpg',
                             action=MessageAction(label='Blackpepper', text=order_memo + ' blackpepper')
                             )
                     ])
