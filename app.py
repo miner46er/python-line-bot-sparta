@@ -19,7 +19,9 @@ from linebot.models import (
     ImageCarouselColumn, CarouselTemplate, CarouselColumn, PostbackEvent
 )
 
+base_url = os.getenv('BASE_URL', None)
 
+statics_url = base_url + '/static'
 
 DATABASE_URL = os.getenv('DATABASE_URL', None)
 
@@ -256,7 +258,7 @@ def message_text(event):
                             action=MessageAction(label='XO', text=order_memo + ' xo')
                             ),
                         ImageCarouselColumn(
-                            image_url='https://via.placeholder.com/512x512',
+                            image_url=statics_url + '/sauce_mayo.jpg',
                             action=MessageAction(label='Mayonnaise', text=order_memo + ' mayo')
                             ),
                         ImageCarouselColumn(
