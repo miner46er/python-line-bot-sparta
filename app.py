@@ -238,7 +238,7 @@ def message_text(event):
                             action=MessageAction(label='Cumi', text=order_memo + ' cumi')
                             ),
                         ImageCarouselColumn(
-                            image_url=statics_url + 'topping_campur.jpg',
+                            image_url=statics_url + '/topping_campur.jpg',
                             action=MessageAction(label='Campur', text=order_memo + ' campur')
                             )
                     ])
